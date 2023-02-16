@@ -43,7 +43,15 @@ public class FileUtils {
         final ArrayList<String> mimes = new ArrayList<>();
 
         for (int i = 0; i < allowedExtensions.size(); i++) {
-            final String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(allowedExtensions.get(i));
+            final String ext = allowedExtensions.get(i);
+            // Temporary fix for csv ext.
+            if (ext.equalsIgnoreCase("csv")) {
+                mimes.add("text/csv");
+                mimes.add("text/comma-separated-values");
+                continue;
+            }
+
+            final String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
             if (mime == null) {
                 Log.w(TAG, "Custom file type " + allowedExtensions.get(i) + " is unsupported and will be ignored.");
                 continue;
